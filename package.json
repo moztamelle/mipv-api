@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Francisco Tamele",
+  "description": "Api do MIPV",
   "license": "MIT",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",

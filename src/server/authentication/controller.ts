@@ -223,27 +223,6 @@ const update = async (req: Request, res: Response) => {
     }
   }
 
-  console.log(user)
-  console.log(userUpdate)
-
-  return response.sucess(null)
-
-
-  user.name = userUpdate.name
-  user.address = userUpdate.address
-  user.phone = userUpdate.phone
-
-  const statusDB = await userDB.update(user)
-
-  if (statusDB.type === FcStatusValues.SUCESS) {
-    delete user.password
-    delete user.token
-    delete user.hash_confirmation
-
-    return res.status(200).json(user)
-  } else {
-    return response.serverError(String(statusDB.data))
-  }
 }
 
 /**

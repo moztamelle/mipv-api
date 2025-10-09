@@ -10,7 +10,7 @@ export enum UserStatus {
 
 export enum UserType {
   'SIMPATIZANTE' = 'SIMPATIZANTE',
-  'MENBRO' = 'MENBRO',
+  'MEMBRO' = 'MEMBRO',
   'AFILIADO' = 'AFILIADO',
 }
 
