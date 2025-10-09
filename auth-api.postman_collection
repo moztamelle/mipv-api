@@ -1,0 +1,245 @@
+{
+	"info": {
+		"_postman_id": "801c644b-93f6-4d7a-be0e-3b40541af187",
+		"name": "mipv-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24822996",
+		"_collection_link": "https://galactic-shadow-751299.postman.co/workspace/My-Projects~e720712d-730a-499c-b35b-0aa93d5861bf/collection/24822996-801c644b-93f6-4d7a-be0e-3b40541af187?action=share&source=collection_link&creator=24822996"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Francisco Tamele",
+									"type": "default"
+								},
+								{
+									"key": "email_whatsapp",
+									"value": "845857656",
+									"type": "default"
+								},
+								{
+									"key": "phone",
+									"value": "849421483",
+									"type": "default"
+								},
+								{
+									"key": "gender",
+									"value": "M",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "Moçcambique",
+									"type": "default"
+								},
+								{
+									"key": "address",
+									"value": "Maputo",
+									"type": "default"
+								},
+								{
+									"key": "doc_id",
+									"value": "1234567890",
+									"type": "text"
+								},
+								{
+									"key": "doc_type",
+									"value": "Bilhete de Identidade",
+									"type": "default"
+								},
+								{
+									"key": "birthday",
+									"value": "2001-04-04",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "MENBRO",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/D:/Images/Screenshot 2025-09-29 100236.png"
+								},
+								{
+									"key": "password",
+									"value": "123456789",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/user/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirmation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email_whatsapp\": \"845857656\",\r\n    \"hash_confirmation\": \"52654982845857656\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/confirmation?type=RECOVER",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"confirmation"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "RECOVER",
+									"description": "CREATION/RECOVER"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authenticate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email_whatsapp\":\"845857656\",\r\n    \"password\":\"000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/authentication",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"authentication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recoverpass",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email_whatsapp\":\"845857656\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/recover",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"recover"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email_whatsapp\": \"845857656\",\r\n    \"hash_confirmation\": \"52654982845857656\",\r\n    \"password\":\"000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/reset-password?type=RECOVER",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "RECOVER"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api-info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
