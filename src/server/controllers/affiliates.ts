@@ -1,10 +1,8 @@
-import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
-import { ENV_VARS } from '../..'
-import { UserStatus } from '../authentication/controller'
-import userDB, { type User } from '../authentication/db'
 import { FcStatusValues } from '../authentication/http/api-responses'
 import { HandleResponse } from '../authentication/http/http-responses'
+import { dbFiliaste } from '../database/afiliaste'
+import { Afiliaste } from '../types/afiliaste'
 import LocalStorage from '../utils/storage/storage'
 /**
  * Metodo responsavél por adicionar novo usuário
@@ -15,31 +13,27 @@ import LocalStorage from '../utils/storage/storage'
 const add = async (req: Request, res: Response) => {
 
   const response = new HandleResponse(req, res)
-  const user: User = req.body as User
-  user.status = UserStatus.PENDENTE
+  const afiliaste: Afiliaste = req.body as Afiliaste
 
-  /** trim all main field of user object */
-  user.email_whatsapp = user.email_whatsapp.trim().toLowerCase()
+  afiliaste.phone = afiliaste.phone?.trim();
 
-  user.phone = user.phone?.trim()
-
-  const statusDB1 = await userDB.add(user)
+  const statusDB1 = await dbFiliaste.add(afiliaste)
 
   if (statusDB1.type === FcStatusValues.SUCESS) {
 
-    const user = statusDB1.data as User
+    const afiliaste = statusDB1.data as Afiliaste
 
     const statusS2 = await LocalStorage.saveFile({
-      fileName: `${user.id}-${user.photo.originalFilename}`,
-      filePath: user.photo.path,
+      fileName: `${afiliaste.id}-${afiliaste.photo.originalFilename}`,
+      filePath: afiliaste.photo.path,
     });
 
     if (statusS2.status === "SUCCESS") {
-      user.photo = statusS2.data;
-      userDB.updatePhoto(user)
+      afiliaste.photo = statusS2.data;
+      dbFiliaste.updatePhoto(afiliaste)
     }
 
-    return res.status(201).json(user)
+    return res.status(201).json(afiliaste)
 
   } else {
     return response.serverError(String(statusDB1.data))
@@ -54,24 +48,25 @@ const add = async (req: Request, res: Response) => {
 const update = async (req: Request, res: Response) => {
   const response = new HandleResponse(req, res)
 
-  let user = JSON.parse(req.params.user) as User
-  const oldPic = user.photo;
-  const userUpdate = req.body as User
+  let afliaste = JSON.parse(req.params.afiliaste) as Afiliaste
+  const oldPic = afliaste.photo;
+  const afiliasteUpdate = req.body as Afiliaste
+  console.log(afiliasteUpdate)
 
   // Actualizar Imagem
   if ((req.query.action as any) === "media") {
 
     const statusS2 = await LocalStorage.saveFile({
-      fileName: `${user.id}-${Date.now()}-${userUpdate.photo.originalFilename}`,
-      filePath: userUpdate.photo.path,
+      fileName: `${afliaste.id}-${Date.now()}-${afiliasteUpdate.photo.originalFilename}`,
+      filePath: afiliasteUpdate.photo.path,
     });
 
     if (statusS2.status === "SUCCESS") {
-      user.photo = statusS2.data;
-      const status = await userDB.updatePhoto(user);
+      afliaste.photo = statusS2.data;
+      const status = await dbFiliaste.updatePhoto(afliaste);
       if (status.type === FcStatusValues.SUCESS) {
         LocalStorage.deleteFile(oldPic);
-        return response.sucess(user);
+        return response.sucess(afliaste);
       } else {
         return response.serverError(status.data);
       }
@@ -81,51 +76,47 @@ const update = async (req: Request, res: Response) => {
 
   } else {
 
-    user = {
-      ...user,
-      name: userUpdate.name,
-      phone: userUpdate.phone,
-      address: userUpdate.address,
-      country: userUpdate.country,
-      doc_id: userUpdate.doc_id,
-      doc_type: userUpdate.doc_type,
-      birthday: userUpdate.birthday,
-      gender: userUpdate.gender,
-      type: userUpdate.type,
+    afliaste = {
+      id: afliaste.id,
+      name: afiliasteUpdate.name,
+      phone: afiliasteUpdate.phone,
+      address: afiliasteUpdate.address,
+      country: afiliasteUpdate.country,
+      doc_id: afiliasteUpdate.doc_id,
+      doc_type: afiliasteUpdate.doc_type,
+      birthday: afiliasteUpdate.birthday,
+      gender: afiliasteUpdate.gender,
+      type: afiliasteUpdate.type,
     }
 
-    const status = await userDB.update(user);
+    const status = await dbFiliaste.update(afliaste);
     if (status.type === FcStatusValues.SUCESS) {
-      return response.sucess(user);
+      return response.sucess(afliaste);
     } else {
       return response.serverError(status.data);
     }
   }
 
-  console.log(user)
-  console.log(userUpdate)
+}
 
-  return response.sucess(null)
+const remove = async (req: Request, res: Response) => {
 
+  const response = new HandleResponse(req, res)
+  let afliaste = JSON.parse(req.params.afiliaste) as Afiliaste;
 
-  user.name = userUpdate.name
-  user.address = userUpdate.address
-  user.phone = userUpdate.phone
+  const status = await dbFiliaste.deleteById(Number(afliaste.id));
 
-  const statusDB = await userDB.update(user)
-
-  if (statusDB.type === FcStatusValues.SUCESS) {
-    delete user.password
-    delete user.token
-    delete user.hash_confirmation
-
-    return res.status(200).json(user)
+  if (status.type === FcStatusValues.SUCESS) {
+    LocalStorage.deleteFile(afliaste.photo);
+    return response.sucess(null);
   } else {
-    return response.serverError(String(statusDB.data))
+    return response.serverError(status.data);
   }
+
 }
 
 export default {
   add,
-  update
+  update,
+  remove
 }

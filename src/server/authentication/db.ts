@@ -16,6 +16,10 @@ export enum UserType {
 
 type Gender = 'M' | 'F'
 
+export {
+  Gender
+}
+
 interface User {
   id?: number
   name: string

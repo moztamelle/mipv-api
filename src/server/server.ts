@@ -4,6 +4,7 @@ import express from 'express'
 import { faleConnosco } from './authentication/controller'
 import { HTTP_STATUS } from './authentication/http/http-responses'
 import authRouter from './authentication/route'
+import afiliastesRouter from './routes/afiliastes'
 import { app, server } from './socket/socket'
 import LocalStorage from './utils/storage/storage'
 
@@ -12,6 +13,7 @@ app.use(express.json())
 app.set('view engine', 'jade')
 
 app.use('/api/user', authRouter)
+app.use('/api/afiliastes', afiliastesRouter)
 app.post('/api/talkwithus', faleConnosco)
 
 app.get('/api/file/:filename', (req, res) => {
