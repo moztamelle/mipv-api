@@ -97,18 +97,19 @@ export const add_user = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const update = (req: Request, res: Response, next: NextFunction) => {
-
-  const response = new HandleResponse(req, res);
+  const response = new HandleResponse(req, res)
   const form = new multiparty.Form()
-  const query = req.query;
+  const query = req.query
 
   if (!['media', 'data'].includes((query as any).action)) {
-    return response.badRequest("Informe se pretende actual a foto ou informação")
+    return response.badRequest(
+      'Informe se pretende actual a foto ou informação'
+    )
   }
 
   form.parse(req, async function (err, fields, files) {
     const formData = { ...fields, ...files }
-    let body = {} as Omit<User, "email_whatsapp">
+    let body = {} as Omit<User, 'email_whatsapp'>
 
     if (query.action === 'media') {
       body.photo = handleImagePhoto(formData?.photo?.[0]) as unknown as string

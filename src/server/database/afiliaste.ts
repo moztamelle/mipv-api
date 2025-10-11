@@ -1,15 +1,32 @@
 import db from '../authentication/connection'
-import fcResponse, { FcStatusValues } from '../authentication/http/api-responses'
+import fcResponse, {
+  FcStatusValues,
+} from '../authentication/http/api-responses'
 import { Afiliaste } from '../types/afiliaste'
 import { FcResponseProps } from '../utils/form-task'
 
+const findMyAfiliaste = async (
+  isCount: boolean,
+  idUser: number,
+  limit?: string
+): Promise<FcResponseProps> => {
+  const sql = isCount
+    ? 'SELECT count(*) FROM users WHERE token=$1'
+    : `SELECT * FROM users WHERE token=$1 ${limit}`
 
+  const result = await db.query(sql, [String(idUser)])
+
+  if (isCount) {
+    return fcResponse(FcStatusValues.SUCESS, result[0])
+  } else {
+    return fcResponse(FcStatusValues.SUCESS, result)
+  }
+}
 
 const add = async (afliaste: Afiliaste): Promise<FcResponseProps> => {
   try {
-
     const result = await db.one(
-      'INSERT INTO users (name, phone, address, gender, photo, country, doc_type, doc_id, birthday, type) VALUES (${name}, ${phone}, ${address}, ${gender}, ${photo}, ${country}, ${doc_type}, ${doc_id}, ${birthday}, ${type}) RETURNING id',
+      'INSERT INTO users (name, phone, address, gender, photo, country, doc_type, doc_id, birthday, type, token) VALUES (${name}, ${phone}, ${address}, ${gender}, ${photo}, ${country}, ${doc_type}, ${doc_id}, ${birthday}, ${type}, ${token}) RETURNING id',
       afliaste
     )
 
@@ -47,13 +64,10 @@ const update = async (afliaste: Afiliaste): Promise<FcResponseProps> => {
 
 const updatePhoto = async (afiliaste: Afiliaste): Promise<FcResponseProps> => {
   try {
-    await db.query(
-      'UPDATE users SET photo=$1 WHERE id = $2',
-      [
-        afiliaste.photo,
-        afiliaste.id,
-      ]
-    )
+    await db.query('UPDATE users SET photo=$1 WHERE id = $2', [
+      afiliaste.photo,
+      afiliaste.id,
+    ])
 
     return fcResponse(FcStatusValues.SUCESS)
   } catch (error) {
@@ -75,9 +89,7 @@ const findById = async (id: number): Promise<FcResponseProps> => {
 
 const deleteById = async (id: number): Promise<FcResponseProps> => {
   try {
-    await db.query('DELETE FROM users WHERE id = $1', [
-      id,
-    ])
+    await db.query('DELETE FROM users WHERE id = $1', [id])
 
     return fcResponse(FcStatusValues.SUCESS)
   } catch (error) {
@@ -90,5 +102,6 @@ export const dbFiliaste = {
   update,
   findById,
   updatePhoto,
-  deleteById
+  deleteById,
+  findMyAfiliaste,
 }

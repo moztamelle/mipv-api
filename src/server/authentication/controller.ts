@@ -99,15 +99,15 @@ const add = async (req: Request, res: Response) => {
 
     user.token = Buffer.from(
       user.email_whatsapp.toLowerCase() + ':' + passwordPure
-    ).toString('base64');
+    ).toString('base64')
 
     const statusS2 = await LocalStorage.saveFile({
       fileName: `${user.id}-${user.photo.originalFilename}`,
       filePath: user.photo.path,
-    });
+    })
 
-    if (statusS2.status === "SUCCESS") {
-      user.photo = statusS2.data;
+    if (statusS2.status === 'SUCCESS') {
+      user.photo = statusS2.data
       userDB.updatePhoto(user)
     }
 
@@ -176,32 +176,29 @@ const update = async (req: Request, res: Response) => {
   const response = new HandleResponse(req, res)
 
   let user = JSON.parse(req.params.user) as User
-  const oldPic = user.photo;
+  const oldPic = user.photo
   const userUpdate = req.body as User
 
   // Actualizar Imagem
-  if ((req.query.action as any) === "media") {
-
+  if ((req.query.action as any) === 'media') {
     const statusS2 = await LocalStorage.saveFile({
       fileName: `${user.id}-${Date.now()}-${userUpdate.photo.originalFilename}`,
       filePath: userUpdate.photo.path,
-    });
+    })
 
-    if (statusS2.status === "SUCCESS") {
-      user.photo = statusS2.data;
-      const status = await userDB.updatePhoto(user);
+    if (statusS2.status === 'SUCCESS') {
+      user.photo = statusS2.data
+      const status = await userDB.updatePhoto(user)
       if (status.type === FcStatusValues.SUCESS) {
-        LocalStorage.deleteFile(oldPic);
-        return response.sucess(user);
+        LocalStorage.deleteFile(oldPic)
+        return response.sucess(user)
       } else {
-        return response.serverError(status.data);
+        return response.serverError(status.data)
       }
     } else {
-      return response.badRequest(statusS2.data);
+      return response.badRequest(statusS2.data)
     }
-
   } else {
-
     user = {
       ...user,
       name: userUpdate.name,
@@ -215,14 +212,13 @@ const update = async (req: Request, res: Response) => {
       type: userUpdate.type,
     }
 
-    const status = await userDB.update(user);
+    const status = await userDB.update(user)
     if (status.type === FcStatusValues.SUCESS) {
-      return response.sucess(user);
+      return response.sucess(user)
     } else {
-      return response.serverError(status.data);
+      return response.serverError(status.data)
     }
   }
-
 }
 
 /**
@@ -481,5 +477,5 @@ export default {
   recoverAccount,
   confirmationHash,
   resetPassword,
-  resendCode
+  resendCode,
 }

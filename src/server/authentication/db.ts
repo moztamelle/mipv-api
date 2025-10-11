@@ -16,9 +16,7 @@ export enum UserType {
 
 type Gender = 'M' | 'F'
 
-export {
-  Gender
-}
+export { Gender }
 
 interface User {
   id?: number
@@ -106,13 +104,10 @@ const update = async (user: User): Promise<FcResponseProps> => {
 
 const updatePhoto = async (user: User): Promise<FcResponseProps> => {
   try {
-    await db.query(
-      'UPDATE users SET photo=$1 WHERE id = $2',
-      [
-        user.photo,
-        user.id,
-      ]
-    )
+    await db.query('UPDATE users SET photo=$1 WHERE id = $2', [
+      user.photo,
+      user.id,
+    ])
 
     return fcResponse(FcStatusValues.SUCESS)
   } catch (error) {

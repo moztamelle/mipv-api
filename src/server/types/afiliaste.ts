@@ -1,4 +1,4 @@
-import { Gender, UserType } from "../authentication/db"
+import { Gender, UserType } from '../authentication/db'
 
 interface Afiliaste {
   id?: number
@@ -6,7 +6,7 @@ interface Afiliaste {
   phone?: string | null
   address: string
   gender?: Gender
-  hash_confirmation?: string | null
+  token?: string | null
   photo?: any
   country?: string
   doc_type?: string
@@ -15,6 +15,4 @@ interface Afiliaste {
   type?: UserType
 }
 
-export type {
-  Afiliaste
-}
+export type { Afiliaste }

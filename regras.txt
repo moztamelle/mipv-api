@@ -1,1 +1,2 @@
 1. Se o usuário for diferente do tipo MEMBRO no token, irá levar o id de quem o registrou !
+2. Os irmãos que não tiverem acesso a aplicativo ou não saberem serão registrados por qualquer usuário desde que tenha acesso como administrator e não estarão veinculados a ele.

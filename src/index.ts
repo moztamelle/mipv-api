@@ -5,14 +5,15 @@ import { server } from './server/server'
 export const ENV_VARS = {
   appName: process.env.APP_NAME ?? '',
   appUrl: process.env.API_URL ?? '',
+  pagination: Number(process.env.PAGINATION) ?? 10,
   emailTemplates: {
     contacts: process.env.CONTACTS ?? '',
     logoFileName: process.env.LOGO_FILE_NAME ?? '',
     email: process.env.EMAIL_USER ?? '',
-    password: process.env.EMAIL_PASSWORD ?? ''
+    password: process.env.EMAIL_PASSWORD ?? '',
   },
   database: process.env.DATABASE_URL ?? '',
-  adminsEmails: process.env.EMAIL_ADMIN
+  adminsEmails: process.env.EMAIL_ADMIN,
 }
 
 initDB()

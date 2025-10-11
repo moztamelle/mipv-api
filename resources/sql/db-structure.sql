@@ -17,3 +17,11 @@ create table if not exists users (
 	birthday date default null,
 	type varchar(50) default null
 );
+CREATE TABLE IF NOT EXISTS media (
+	id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	title VARCHAR(255) NOT NULL,
+	album VARCHAR(255) NOT NULL,
+	type VARCHAR(50) NOT NULL,
+	url TEXT NOT NULL,
+	date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

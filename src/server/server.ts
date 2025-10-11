@@ -5,6 +5,7 @@ import { faleConnosco } from './authentication/controller'
 import { HTTP_STATUS } from './authentication/http/http-responses'
 import authRouter from './authentication/route'
 import afiliastesRouter from './routes/afiliastes'
+import mediaRouter from './routes/media'
 import { app, server } from './socket/socket'
 import LocalStorage from './utils/storage/storage'
 
@@ -14,6 +15,7 @@ app.set('view engine', 'jade')
 
 app.use('/api/user', authRouter)
 app.use('/api/afiliastes', afiliastesRouter)
+app.use('/api/media', mediaRouter)
 app.post('/api/talkwithus', faleConnosco)
 
 app.get('/api/file/:filename', (req, res) => {

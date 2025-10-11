@@ -11,9 +11,21 @@ afiliastesRouter.post(
   affiliates.add
 )
 
+afiliastesRouter.get('/', [middlewares.authentication], affiliates.get)
+
+afiliastesRouter.get(
+  '/brothers',
+  [middlewares.authentication],
+  affiliates.getBrothers
+)
+
 afiliastesRouter.post(
   '/update',
-  [middlewares.authentication, middlewaresAfiliaste.findById, middlewaresAfiliaste.update],
+  [
+    middlewares.authentication,
+    middlewaresAfiliaste.findById,
+    middlewaresAfiliaste.update,
+  ],
   affiliates.update
 )
 
@@ -22,6 +34,5 @@ afiliastesRouter.delete(
   [middlewares.authentication, middlewaresAfiliaste.findById],
   affiliates.remove
 )
-
 
 export default afiliastesRouter
