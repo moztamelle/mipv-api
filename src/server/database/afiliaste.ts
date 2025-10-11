@@ -12,7 +12,7 @@ const findMyAfiliaste = async (
 ): Promise<FcResponseProps> => {
   const sql = isCount
     ? 'SELECT count(*) FROM users WHERE token=$1'
-    : `SELECT * FROM users WHERE token=$1 ${limit}`
+    : `SELECT * FROM users WHERE token=$1 ORDER BY name ASC ${limit}`
 
   const result = await db.query(sql, [String(idUser)])
 
