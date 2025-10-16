@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 import { ENV_VARS } from '../..'
+import Pagination from '../database/pagination'
 import LocalStorage from '../utils/storage/storage'
 import userDB, { type User } from './db'
 import { FcStatusValues } from './http/api-responses'
@@ -470,6 +471,71 @@ export const faleConnosco = async (req: Request, res: Response) => {
   }
 }
 
+const searchByName = async (req: Request, res: Response) => {
+  const response = new HandleResponse(req, res)
+
+  const statusC1 = await userDB.searchByName(true, (req.query as any).name)
+
+  if (statusC1.type === FcStatusValues.SUCESS) {
+    const pagination = new Pagination(
+      Number((statusC1.data as any).count),
+      1,
+      ENV_VARS.pagination,
+    )
+    const statusD = await userDB.searchByName(
+      false,
+      (req.query as any).name,
+      pagination.getLimit()
+    )
+    if (statusD.type === FcStatusValues.SUCESS) {
+      const data = (statusD.data as User[]).map(
+        ({
+          token,
+          hash_confirmation,
+          access,
+          password,
+          ...item
+        }) => item
+      )
+      return response.responsePagined(data, 1, 1)
+    }
+  } else {
+    return response.serverError(statusC1.data)
+  }
+}
+
+const findAll = async (req: Request, res: Response) => {
+  const response = new HandleResponse(req, res)
+
+  const statusC1 = await userDB.findAll(true)
+
+  if (statusC1.type === FcStatusValues.SUCESS) {
+    const pagination = new Pagination(
+      Number((statusC1.data as any).count),
+      1,
+      ENV_VARS.pagination,
+    )
+    const statusD = await userDB.findAll(
+      false,
+      pagination.getLimit()
+    )
+    if (statusD.type === FcStatusValues.SUCESS) {
+      const data = (statusD.data as User[]).map(
+        ({
+          token,
+          hash_confirmation,
+          access,
+          password,
+          ...item
+        }) => item
+      )
+      return response.responsePagined(data, 1, 1)
+    }
+  } else {
+    return response.serverError(statusC1.data)
+  }
+}
+
 export default {
   authentication,
   add,
@@ -478,4 +544,6 @@ export default {
   confirmationHash,
   resetPassword,
   resendCode,
+  findAll,
+  searchByName
 }

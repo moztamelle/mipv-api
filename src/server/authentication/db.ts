@@ -167,6 +167,35 @@ const deleteByEmail = async (email: string): Promise<FcResponseProps> => {
   }
 }
 
+const searchByName = async (
+  isCount: boolean,
+  name: string,
+  limit?: string
+): Promise<FcResponseProps> => {
+  console.log(name)
+  const sql = isCount
+    ? `SELECT count(*) FROM users WHERE name ILIKE '%' || $1 || '%'`
+    : `SELECT * FROM users WHERE name ILIKE '%' || $1 || '%' ORDER BY name ASC ${limit}`
+
+  const result = await db.query(sql, [name])
+  return fcResponse(FcStatusValues.SUCESS, result)
+
+}
+
+const findAll = async (
+  isCount: boolean,
+  limit?: string
+): Promise<FcResponseProps> => {
+  console.log(name)
+  const sql = isCount
+    ? `SELECT count(*) FROM users`
+    : `SELECT * FROM users ORDER BY name ASC ${limit}`
+
+  const result = await db.query(sql, [name])
+  return fcResponse(FcStatusValues.SUCESS, result)
+
+}
+
 const userDB = {
   add,
   update,
@@ -175,6 +204,8 @@ const userDB = {
   deleteByEmail,
   resetPassword,
   findById,
+  findAll,
+  searchByName
 }
 
 export default userDB

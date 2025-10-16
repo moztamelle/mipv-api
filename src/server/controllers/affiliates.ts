@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { ENV_VARS } from '../..'
 import { User, UserType } from '../authentication/db'
 import { FcStatusValues } from '../authentication/http/api-responses'
 import { HandleResponse } from '../authentication/http/http-responses'
@@ -19,7 +20,7 @@ const get = async (req: Request, res: Response) => {
     const pagination = new Pagination(
       Number((statusC1.data as any).count),
       1,
-      100
+      ENV_VARS.pagination
     )
     const statusD = await dbFiliaste.findMyAfiliaste(
       false,

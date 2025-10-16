@@ -42,4 +42,12 @@ authRouter.post(
   user.resetPassword
 )
 
+authRouter.get(
+  '/search',
+  [
+    middlewares.authentication
+  ],
+  user.searchByName
+)
+
 export default authRouter
