@@ -88,7 +88,40 @@ const findByAge = async (req: Request, res: Response) => {
   }
 }
 
+const findByName = async (req: Request, res: Response) => {
+  const response = new HandleResponse(req, res)
+
+  const params = req.query as any
+  
+
+  const statusD1 = await dbUser2.findByName(true, params.name)
+  if (statusD1.type === FcStatusValues.SUCESS) {
+    const pagination = new Pagination(
+      Number(statusD1.data),
+      params.page ?? 1,
+      ENV_VARS.pagination
+    )
+    const statusD2 = await dbUser2.findByName(
+      false,
+      params.name,
+      pagination.getLimit()
+    )
+
+    if (statusD2.type === FcStatusValues.SUCESS) {
+      const data = (statusD2.data as User[]).map(
+        ({ token, hash_confirmation, access, password, ...item }) => item
+      )
+      return response.responsePagined(data, 1, 1)
+    } else {
+      return response.serverError(statusD1.data)
+    }
+  } else {
+    return response.serverError(statusD1.data)
+  }
+}
+
 export default {
   findAll,
   findByAge,
+  findByName
 }

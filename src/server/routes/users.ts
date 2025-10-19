@@ -8,4 +8,6 @@ usersAdmin.get('/', [authentication, isAdmin], users.findAll)
 
 usersAdmin.get('/age', [authentication, isAdmin], users.findByAge)
 
+usersAdmin.get('/name', [authentication, isAdmin], users.findByName)
+
 export default usersAdmin

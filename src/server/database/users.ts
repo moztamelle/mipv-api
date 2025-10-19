@@ -58,7 +58,26 @@ const findByAge = async (
   }
 }
 
+const findByName = async (
+  isCount: boolean,
+  name: string,
+  limit?: string
+): Promise<FcResponseProps> => {
+  try {
+    const sql = `SELECT ${isCount ? 'count(*)' : '*'} FROM users WHERE name ILIKE '%' || $1 || '%' ${isCount ? '' : 'ORDER BY name ASC'} ${isCount ? '' : `${limit}`};`
+
+    const result = await db.any(sql, [name])
+
+    return isCount
+      ? fcResponse(FcStatusValues.SUCESS, Number(result[0].count))
+      : fcResponse(FcStatusValues.SUCESS, result)
+  } catch (error) {
+    return fcResponse(FcStatusValues.ERROR, error)
+  }
+}
+
 export const dbUser2 = {
   findAllUsers,
   findByAge,
+  findByName
 }
