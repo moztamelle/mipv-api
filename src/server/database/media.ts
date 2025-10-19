@@ -35,7 +35,6 @@ const update = async (
   }
 }
 
-
 const findById = async (id: number): Promise<FcResponseProps> => {
   try {
     const result = await db.query('SELECT * FROM media WHERE id = $1', [id])
@@ -116,7 +115,6 @@ const findByTitle = async (
   }
 }
 
-
 const findAll = async (
   isCount: boolean,
   type: MediaType,
@@ -131,9 +129,7 @@ const findAll = async (
       ${isCount ? '' : `${limit}`};
     `
 
-    const result = await db.any(sql, [
-      type
-    ])
+    const result = await db.any(sql, [type])
 
     return isCount
       ? fcResponse(FcStatusValues.SUCESS, Number(result[0].count))
@@ -150,5 +146,5 @@ export const dbMedia = {
   deleteById,
   findByDate,
   findByTitle,
-  findAll
+  findAll,
 }

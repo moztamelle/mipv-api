@@ -480,7 +480,7 @@ const searchByName = async (req: Request, res: Response) => {
     const pagination = new Pagination(
       Number((statusC1.data as any).count),
       1,
-      ENV_VARS.pagination,
+      ENV_VARS.pagination
     )
     const statusD = await userDB.searchByName(
       false,
@@ -489,13 +489,7 @@ const searchByName = async (req: Request, res: Response) => {
     )
     if (statusD.type === FcStatusValues.SUCESS) {
       const data = (statusD.data as User[]).map(
-        ({
-          token,
-          hash_confirmation,
-          access,
-          password,
-          ...item
-        }) => item
+        ({ token, hash_confirmation, access, password, ...item }) => item
       )
       return response.responsePagined(data, 1, 1)
     }
@@ -513,21 +507,12 @@ const findAll = async (req: Request, res: Response) => {
     const pagination = new Pagination(
       Number((statusC1.data as any).count),
       1,
-      ENV_VARS.pagination,
+      ENV_VARS.pagination
     )
-    const statusD = await userDB.findAll(
-      false,
-      pagination.getLimit()
-    )
+    const statusD = await userDB.findAll(false, pagination.getLimit())
     if (statusD.type === FcStatusValues.SUCESS) {
       const data = (statusD.data as User[]).map(
-        ({
-          token,
-          hash_confirmation,
-          access,
-          password,
-          ...item
-        }) => item
+        ({ token, hash_confirmation, access, password, ...item }) => item
       )
       return response.responsePagined(data, 1, 1)
     }
@@ -545,5 +530,5 @@ export default {
   resetPassword,
   resendCode,
   findAll,
-  searchByName
+  searchByName,
 }

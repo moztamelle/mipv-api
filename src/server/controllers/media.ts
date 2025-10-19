@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
-import { ENV_VARS } from '../..';
-import { FcStatusValues } from '../authentication/http/api-responses';
-import { HandleResponse } from '../authentication/http/http-responses';
-import { dbMedia } from '../database/media'; // Ajuste o caminho conforme necessário
-import Pagination from '../database/pagination';
-import { Media } from '../types/media';
+import { Request, Response } from 'express'
+import { ENV_VARS } from '../..'
+import { FcStatusValues } from '../authentication/http/api-responses'
+import { HandleResponse } from '../authentication/http/http-responses'
+import { dbMedia } from '../database/media' // Ajuste o caminho conforme necessário
+import Pagination from '../database/pagination'
+import { Media } from '../types/media'
 
 /**
  * Método responsável por adicionar nova media
@@ -133,7 +133,6 @@ const findByDate = async (req: Request, res: Response) => {
   }
 }
 
-
 const findByTitle = async (req: Request, res: Response) => {
   const response = new HandleResponse(req, res)
 
@@ -167,12 +166,11 @@ const findByTitle = async (req: Request, res: Response) => {
   }
 }
 
-
 export default {
   add,
   update,
   remove,
   findByDate,
   findByTitle,
-  findAll
+  findAll,
 }

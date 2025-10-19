@@ -130,6 +130,22 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
     next()
   })
 }
+
+export const isAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const response = new HandleResponse(req, res)
+  const user = JSON.parse(req.params.user) as User
+
+  if (user.access !== 'ADMIN') {
+    return response.accessDenied('Accesso negado !')
+  } else {
+    next()
+  }
+}
+
 export const confirmation = async (
   req: Request,
   res: Response,

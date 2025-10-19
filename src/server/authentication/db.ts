@@ -179,7 +179,6 @@ const searchByName = async (
 
   const result = await db.query(sql, [name])
   return fcResponse(FcStatusValues.SUCESS, result)
-
 }
 
 const findAll = async (
@@ -193,7 +192,6 @@ const findAll = async (
 
   const result = await db.query(sql, [name])
   return fcResponse(FcStatusValues.SUCESS, result)
-
 }
 
 const userDB = {
@@ -205,7 +203,7 @@ const userDB = {
   resetPassword,
   findById,
   findAll,
-  searchByName
+  searchByName,
 }
 
 export default userDB

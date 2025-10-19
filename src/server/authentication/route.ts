@@ -42,12 +42,6 @@ authRouter.post(
   user.resetPassword
 )
 
-authRouter.get(
-  '/search',
-  [
-    middlewares.authentication
-  ],
-  user.searchByName
-)
+authRouter.get('/search', [middlewares.authentication], user.searchByName)
 
 export default authRouter

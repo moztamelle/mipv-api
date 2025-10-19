@@ -11,6 +11,17 @@ function isJSON(value: unknown): boolean {
   }
 }
 
+export function isInteger(value: unknown): boolean {
+  // Converte para número caso seja uma string
+  const numberValue = typeof value === 'string' ? Number(value) : value
+
+  return (
+    typeof numberValue === 'number' &&
+    Number.isInteger(numberValue) &&
+    numberValue >= 0
+  )
+}
+
 const Tasks = {
   isString,
   isJSON,

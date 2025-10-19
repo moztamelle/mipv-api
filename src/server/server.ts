@@ -6,6 +6,7 @@ import { HTTP_STATUS } from './authentication/http/http-responses'
 import authRouter from './authentication/route'
 import afiliastesRouter from './routes/afiliastes'
 import mediaRouter from './routes/media'
+import usersAdmin from './routes/users'
 import { app, server } from './socket/socket'
 import LocalStorage from './utils/storage/storage'
 
@@ -14,6 +15,7 @@ app.use(express.json())
 app.set('view engine', 'jade')
 
 app.use('/api/user', authRouter)
+app.use('/api/user/admin', usersAdmin)
 app.use('/api/afiliastes', afiliastesRouter)
 app.use('/api/media', mediaRouter)
 app.post('/api/talkwithus', faleConnosco)
