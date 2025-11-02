@@ -11,7 +11,7 @@ create table if not exists users (
 	access varchar(10) default 'USER',
 	country varchar(100) default null,
 	gender char default null,
-	photo varchar(255) default null,
+	photo text default null,
 	doc_type varchar(50) default null,
 	doc_id varchar(100) default null,
 	birthday date default null,

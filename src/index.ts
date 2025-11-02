@@ -14,6 +14,13 @@ export const ENV_VARS = {
   },
   database: process.env.DATABASE_URL ?? '',
   adminsEmails: process.env.EMAIL_ADMIN,
+  config: {
+    apkVersion: process.env.APK_VERSION ?? '1.0',
+    facebook: process.env.FB,
+    whatsapp: process.env.WH,
+    call: process.env.CALL,
+    email: process.env.EMAIL,
+  },
 }
 
 initDB()

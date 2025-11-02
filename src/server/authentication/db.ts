@@ -71,6 +71,7 @@ const add = async (user: User): Promise<FcResponseProps> => {
 
     return fcResponse(FcStatusValues.SUCESS, userWithId)
   } catch (error) {
+    console.log(error)
     return fcResponse(FcStatusValues.ERROR, error)
   }
 }

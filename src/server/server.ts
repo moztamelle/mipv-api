@@ -1,6 +1,7 @@
 import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
+import { ENV_VARS } from '..'
 import { faleConnosco } from './authentication/controller'
 import { HTTP_STATUS } from './authentication/http/http-responses'
 import authRouter from './authentication/route'
@@ -30,6 +31,16 @@ app.get('/api/file/:filename', (req, res) => {
   }
 })
 
+app.get('/api/config', (req, res) => {
+  return res.status(200).json({
+    apkVersion: ENV_VARS.config.apkVersion,
+    call: ENV_VARS.config.call,
+    email: ENV_VARS.config.email,
+    facebook: ENV_VARS.config.facebook,
+    whatsapp: ENV_VARS.config.whatsapp,
+  })
+})
+
 app.use('/api', (req, res) => {
   return res.status(200).json({
     status: HTTP_STATUS.SUCCESS,
@@ -39,9 +50,12 @@ app.use('/api', (req, res) => {
   })
 })
 
+
+
 // 404 unknown route
 app.use(async (req, res) => {
   return res.send('Página não encontrada.')
 })
 
 export { server }
+
